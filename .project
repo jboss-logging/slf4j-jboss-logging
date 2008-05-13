@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>slf4j-jboss-logging</name>
+  <comment>slf4j to JBoss Logging Adapter</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
