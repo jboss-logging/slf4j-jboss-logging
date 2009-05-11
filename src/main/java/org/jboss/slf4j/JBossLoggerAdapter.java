@@ -250,27 +250,26 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    public void log(Marker marker, String callerFQCN, int level, String msg, Throwable t)
    {
-      // TODO - marker and callerFQCN not supported by jboss-logging-spi
       switch(level)
       {
          case LocationAwareLogger.TRACE_INT:
-            logger.trace(msg, t);
+            logger.trace(callerFQCN, msg, t);
             break;
             
          case LocationAwareLogger.DEBUG_INT:
-            logger.debug(msg, t);
+            logger.debug(callerFQCN, msg, t);
             break;
             
          case LocationAwareLogger.INFO_INT:
-            logger.info(msg, t);
+            logger.info(callerFQCN, msg, t);
             break;
             
          case LocationAwareLogger.WARN_INT:
-            logger.warn(msg, t);
+            logger.warn(callerFQCN, msg, t);
             break;
             
          case LocationAwareLogger.ERROR_INT:
-            logger.error(msg, t);
+            logger.error(callerFQCN, msg, t);
             break;
             
          default:
