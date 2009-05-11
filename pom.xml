@@ -7,13 +7,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss.slf4j</groupId>
   <artifactId>slf4j-jboss-logging</artifactId>
-  <version>1.0.1.GA</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>slf4j to JBoss Logging Adapter</name>
   <url>http://www.jboss.org</url>
   <description>slf4j to JBoss Logging Adapter</description>
   <scm>
-    <connection>scm:svn:https://svn.jboss.org/repos/common/slf4j-jboss-logging/tags/1.0.1.GA</connection>
+    <connection>scm:svn:https://svn.jboss.org/repos/common/slf4j-jboss-logging/trunk/</connection>
   </scm>
   <build>
     <plugins>
