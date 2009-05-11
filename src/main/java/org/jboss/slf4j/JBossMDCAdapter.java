@@ -58,4 +58,20 @@ public class JBossMDCAdapter implements MDCAdapter
       MDC.remove(key);
    }
 
+   public Map getCopyOfContextMap()
+   {
+      return MDC.getMap();
+   }
+
+   public void setContextMap(final Map contextMap)
+   {
+      clear();
+      for (Map.Entry entry : ((Map<?,?>)contextMap).entrySet()) {
+         final Object key = entry.getKey();
+         final Object value = entry.getValue();
+         if (key != null) {
+            put(String.valueOf(key), value == null ? null : String.valueOf(value));
+         }
+      }
+   }
 }

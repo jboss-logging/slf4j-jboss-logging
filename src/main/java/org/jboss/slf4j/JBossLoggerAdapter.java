@@ -39,6 +39,8 @@ import org.slf4j.spi.LocationAwareLogger;
 public final class JBossLoggerAdapter extends MarkerIgnoringBase
    implements LocationAwareLogger
 {
+   private static final long serialVersionUID = -1855332334983449117L;
+
    final org.jboss.logging.Logger logger;
   
    // package access so that only JBossLoggerFactory be able to create one.
