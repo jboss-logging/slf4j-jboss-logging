@@ -43,6 +43,8 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    final org.jboss.logging.Logger logger;
   
+   private static final String LOGGER_FQCN = JBossLoggerAdapter.class.getName();
+
    // package access so that only JBossLoggerFactory be able to create one.
    JBossLoggerAdapter(org.jboss.logging.Logger logger)
    {
@@ -61,7 +63,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    public void trace(String msg)
    {
-      logger.trace(msg);
+      logger.trace(LOGGER_FQCN, msg, null);
    }
 
    public void trace(String format, Object arg)
@@ -69,7 +71,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg);
-         logger.trace(msgStr);
+         logger.trace(LOGGER_FQCN, msgStr, null);
       }
    }
 
@@ -78,7 +80,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg1, arg2);
-         logger.trace(msgStr);
+         logger.trace(LOGGER_FQCN, msgStr, null);
       }
    }
   
@@ -87,13 +89,13 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          String msgStr = MessageFormatter.arrayFormat(format, argArray);
-         logger.trace(msgStr);
+         logger.trace(LOGGER_FQCN, msgStr, null);
       }
    }
 
    public void trace(String msg, Throwable t)
    {
-      logger.trace(msg, t);
+      logger.trace(LOGGER_FQCN, msg, t);
    }
 
    public boolean isDebugEnabled()
@@ -103,7 +105,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    public void debug(String msg)
    {
-      logger.debug(msg);
+      logger.debug(LOGGER_FQCN, msg, null);
    }
 
    public void debug(String format, Object arg)
@@ -111,7 +113,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg);
-         logger.debug(msgStr);
+         logger.debug(LOGGER_FQCN, msgStr, null);
       }
    }
 
@@ -120,7 +122,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg1, arg2);
-         logger.debug(msgStr);
+         logger.debug(LOGGER_FQCN, msgStr, null);
       }
    }
   
@@ -129,13 +131,13 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          String msgStr = MessageFormatter.arrayFormat(format, argArray);
-         logger.debug(msgStr);
+         logger.debug(LOGGER_FQCN, msgStr, null);
       }
    }
 
    public void debug(String msg, Throwable t)
    {
-      logger.debug(msg, t);
+      logger.debug(LOGGER_FQCN, msg, t);
    }
 
    public boolean isInfoEnabled()
@@ -145,7 +147,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    public void info(String msg)
    {
-      logger.info(msg);
+      logger.info(LOGGER_FQCN, msg, null);
    }
 
    public void info(String format, Object arg)
@@ -153,7 +155,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg);
-         logger.info(msgStr);
+         logger.info(LOGGER_FQCN, msgStr, null);
       }
    }
 
@@ -162,7 +164,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          String msgStr = MessageFormatter.format(format, arg1, arg2);
-         logger.info(msgStr);
+         logger.info(LOGGER_FQCN, msgStr, null);
       }
    }
 
@@ -171,13 +173,13 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          String msgStr = MessageFormatter.arrayFormat(format, argArray);
-         logger.info(msgStr);
+         logger.info(LOGGER_FQCN, msgStr, null);
       }
    }
 
    public void info(String msg, Throwable t)
    {
-      logger.info(msg, t);
+      logger.info(LOGGER_FQCN, msg, t);
    }
 
    public boolean isWarnEnabled()
@@ -188,30 +190,30 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
   
    public void warn(String msg)
    {
-      logger.warn(msg);
+      logger.warn(LOGGER_FQCN, msg, null);
    }
 
    public void warn(String format, Object arg)
    {
       String msgStr = MessageFormatter.format(format, arg);
-      logger.warn(msgStr);
+      logger.warn(LOGGER_FQCN, msgStr, null);
    }
 
    public void warn(String format, Object arg1, Object arg2)
    {
       String msgStr = MessageFormatter.format(format, arg1, arg2);
-      logger.warn(msgStr);
+      logger.warn(LOGGER_FQCN, msgStr, null);
    }
 
    public void warn(String format, Object[] argArray)
    {
       String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      logger.warn(msgStr);
+      logger.warn(LOGGER_FQCN, msgStr, null);
    }
 
    public void warn(String msg, Throwable t)
    {
-      logger.warn(msg, t);
+      logger.warn(LOGGER_FQCN, msg, t);
    }
 
    public boolean isErrorEnabled()
@@ -222,30 +224,30 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
 
    public void error(String msg)
    {
-      logger.error(msg);
+      logger.error(LOGGER_FQCN, msg, null);
    }
 
    public void error(String format, Object arg)
    {
       String msgStr = MessageFormatter.format(format, arg);
-      logger.error(msgStr);
+      logger.error(LOGGER_FQCN, msgStr, null);
    }
 
    public void error(String format, Object arg1, Object arg2)
    {
       String msgStr = MessageFormatter.format(format, arg1, arg2);
-      logger.error(msgStr);
+      logger.error(LOGGER_FQCN, msgStr, null);
    }
 
    public void error(String format, Object[] argArray)
    {
       String msgStr = MessageFormatter.arrayFormat(format, argArray);
-      logger.error(msgStr);
+      logger.error(LOGGER_FQCN, msgStr, null);
    }
 
    public void error(String msg, Throwable t)
    {
-      logger.error(msg, t);
+      logger.error(LOGGER_FQCN, msg, t);
    }
 
    public void log(Marker marker, String callerFQCN, int level, String msg, Throwable t)
