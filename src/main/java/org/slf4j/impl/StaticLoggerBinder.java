@@ -34,6 +34,10 @@ import org.slf4j.spi.LoggerFactoryBinder;
 public class StaticLoggerBinder implements LoggerFactoryBinder
 {
    public static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+
+   public static StaticLoggerBinder getSingleton() {
+       return SINGLETON;
+   }
    
    private static final String loggerFactoryClassStr = JBossLoggerFactory.class.getName();
 
