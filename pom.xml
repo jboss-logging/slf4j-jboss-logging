@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>5</version>
+        <version>20</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.slf4j</groupId>
@@ -35,18 +35,45 @@
     <url>http://www.jboss.org</url>
     <description>slf4j to JBoss Logging Adapter</description>
 
+    <properties>
+        <version.org.jboss.logging>3.3.0.Final</version.org.jboss.logging>
+        <version.org.slf4j>1.7.21</version.org.slf4j>
+        <!-- Test dependencies -->
+        <version.junit>4.12</version.junit>
+
+        <!-- JBoss Logging 3.3.x requires at least 1.6 -->
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <version>${version.org.slf4j}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
-            <version>3.0.0.GA</version>
+            <version>${version.org.jboss.logging}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
