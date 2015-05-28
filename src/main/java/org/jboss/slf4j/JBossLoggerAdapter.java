@@ -72,7 +72,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.trace(/*org.jboss.logging.Logger.Level.TRACE,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -81,7 +81,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.trace(/*org.jboss.logging.Logger.Level.TRACE,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -90,7 +90,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isTraceEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.trace(/*org.jboss.logging.Logger.Level.TRACE,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -116,7 +116,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.debug(/*org.jboss.logging.Logger.Level.DEBUG,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -126,7 +126,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.debug(/*org.jboss.logging.Logger.Level.DEBUG,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -136,7 +136,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isDebugEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.debug(/*org.jboss.logging.Logger.Level.DEBUG,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -162,7 +162,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.info(/*org.jboss.logging.Logger.Level.INFO,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -172,7 +172,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.info(/*org.jboss.logging.Logger.Level.INFO,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -182,7 +182,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       if (logger.isInfoEnabled())
       {
          final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+         logger.info(/*org.jboss.logging.Logger.Level.INFO,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
       }
    }
 
@@ -205,19 +205,19 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
    public void warn(String format, Object arg)
    {
       final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.warn(/*org.jboss.logging.Logger.Level.WARN,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void warn(String format, Object arg1, Object arg2)
    {
       final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.warn(/*org.jboss.logging.Logger.Level.WARN,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void warn(String format, Object[] argArray)
    {
       final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.warn(/*org.jboss.logging.Logger.Level.WARN,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void warn(String msg, Throwable t)
@@ -239,19 +239,19 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
    public void error(String format, Object arg)
    {
       final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.error(/*org.jboss.logging.Logger.Level.ERROR,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void error(String format, Object arg1, Object arg2)
    {
       final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.error(/*org.jboss.logging.Logger.Level.ERROR,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void error(String format, Object[] argArray)
    {
       final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+      logger.error(/*org.jboss.logging.Logger.Level.ERROR,*/ LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
    }
 
    public void error(String msg, Throwable t)
@@ -320,7 +320,9 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase
       }
    }
 
+   /*
    private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message, final Throwable t) {
       logger.log(level, fqcn, message, t);
    }
+   */
 }
