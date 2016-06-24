@@ -21,6 +21,7 @@
  */
 package org.jboss.slf4j;
 
+import org.jboss.logging.Logger.Level;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
@@ -31,296 +32,268 @@ import org.slf4j.spi.LocationAwareLogger;
 /**
  * A wrapper over {@link org.jboss.logging.Logger org.jboss.logging.Logger}
  * in conformance with the {@link Logger} interface.
- *
+ * <p/>
  * Adapted from the corresponding slf4j-log4j adapter.
  *
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
+ * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public final class JBossLoggerAdapter extends MarkerIgnoringBase
-   implements LocationAwareLogger
-{
-   private static final long serialVersionUID = -1855332334983449117L;
+public final class JBossLoggerAdapter extends MarkerIgnoringBase implements LocationAwareLogger {
+    private static final long serialVersionUID = -1855332334983449117L;
 
-   final org.jboss.logging.Logger logger;
+    final org.jboss.logging.Logger logger;
 
-   private static final String LOGGER_FQCN = JBossLoggerAdapter.class.getName();
+    private static final String LOGGER_FQCN = JBossLoggerAdapter.class.getName();
 
-   // package access so that only JBossLoggerFactory be able to create one.
-   JBossLoggerAdapter(org.jboss.logging.Logger logger)
-   {
-      this.logger = logger;
-   }
+    // package access so that only JBossLoggerFactory be able to create one.
+    JBossLoggerAdapter(org.jboss.logging.Logger logger) {
+        this.logger = logger;
+    }
 
-   public String getName()
-   {
-      return logger.getName();
-   }
+    @Override
+    public void log(Marker marker, String fqcn, int level, String message, Object[] argArray, Throwable t) {
+        FormattingTuple result = MessageFormatter.arrayFormat(message, argArray);
+        switch (level) {
+            case LocationAwareLogger.TRACE_INT:
+                logger.trace(fqcn, result.getMessage(), t);
+                break;
 
-   public boolean isTraceEnabled()
-   {
-      return logger.isTraceEnabled();
-   }
+            case LocationAwareLogger.DEBUG_INT:
+                logger.debug(fqcn, result.getMessage(), t);
+                break;
 
-   public void trace(String msg)
-   {
-      logger.trace(LOGGER_FQCN, msg, null);
-   }
+            case LocationAwareLogger.INFO_INT:
+                logger.info(fqcn, result.getMessage(), t);
+                break;
 
-   public void trace(String format, Object arg)
-   {
-      if (logger.isTraceEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+            case LocationAwareLogger.WARN_INT:
+                logger.warn(fqcn, result.getMessage(), t);
+                break;
 
-   public void trace(String format, Object arg1, Object arg2)
-   {
-      if (logger.isTraceEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+            case LocationAwareLogger.ERROR_INT:
+                logger.error(fqcn, result.getMessage(), t);
+                break;
 
-   public void trace(String format, Object[] argArray)
-   {
-      if (logger.isTraceEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+            default:
+                throw new IllegalStateException("Level number " + level + " is not recognized.");
+        }
+    }
 
-   public void trace(String msg, Throwable t)
-   {
-      logger.trace(LOGGER_FQCN, msg, t);
-   }
+    @Override
+    public boolean isTraceEnabled() {
+        return logger.isTraceEnabled();
+    }
 
-   @SuppressWarnings("deprecation")
-   public boolean isDebugEnabled()
-   {
-      return logger.isDebugEnabled();
-   }
+    @Override
+    public void trace(final String msg) {
+        log(Level.TRACE, LOGGER_FQCN, msg, null);
+    }
 
-   public void debug(String msg)
-   {
-      logger.debug(LOGGER_FQCN, msg, null);
-   }
+    @Override
+    public void trace(final String format, final Object arg) {
+        if (logger.isTraceEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void debug(String format, Object arg)
-   {
-      if (logger.isDebugEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void trace(final String format, final Object arg1, final Object arg2) {
+        if (logger.isTraceEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void debug(String format, Object arg1, Object arg2)
-   {
-      if (logger.isDebugEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void trace(final String format, final Object... arguments) {
+        if (logger.isTraceEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void debug(String format, Object[] argArray)
-   {
-      if (logger.isDebugEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void trace(final String msg, final Throwable t) {
+        if (logger.isTraceEnabled()) {
+            log(Level.TRACE, LOGGER_FQCN, msg, t);
+        }
+    }
 
-   public void debug(String msg, Throwable t)
-   {
-      logger.debug(LOGGER_FQCN, msg, t);
-   }
+    @Override
+    public boolean isDebugEnabled() {
+        return logger.isDebugEnabled();
+    }
 
-   @SuppressWarnings("deprecation")
-   public boolean isInfoEnabled()
-   {
-      return logger.isInfoEnabled();
-   }
+    @Override
+    public void debug(final String msg) {
+       if (logger.isDebugEnabled()) {
+           log(Level.DEBUG, LOGGER_FQCN, msg, null);
+       }
+    }
 
-   public void info(String msg)
-   {
-      logger.info(LOGGER_FQCN, msg, null);
-   }
+    @Override
+    public void debug(final String format, final Object arg) {
+        if (logger.isDebugEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void info(String format, Object arg)
-   {
-      if (logger.isInfoEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void debug(final String format, final Object arg1, final Object arg2) {
+        if (logger.isDebugEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void info(String format, Object arg1, Object arg2)
-   {
-      if (logger.isInfoEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void debug(final String format, final Object... arguments) {
+        if (logger.isDebugEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   @SuppressWarnings("deprecation")
-   public void info(String format, Object[] argArray)
-   {
-      if (logger.isInfoEnabled())
-      {
-         final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-         log(org.jboss.logging.Logger.Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-      }
-   }
+    @Override
+    public void debug(final String msg, final Throwable t) {
+        if (logger.isDebugEnabled()) {
+            log(Level.DEBUG, LOGGER_FQCN, msg, t);
+        }
+    }
 
-   public void info(String msg, Throwable t)
-   {
-      logger.info(LOGGER_FQCN, msg, t);
-   }
+    @Override
+    public boolean isInfoEnabled() {
+        return logger.isInfoEnabled();
+    }
 
-   public boolean isWarnEnabled()
-   {
-      // not supported by jboss-logging-spi
-      return true;
-   }
+    @Override
+    public void info(final String msg) {
+        if (logger.isInfoEnabled()) {
+            log(Level.INFO, LOGGER_FQCN, msg, null);
+        }
+    }
 
-   public void warn(String msg)
-   {
-      logger.warn(LOGGER_FQCN, msg, null);
-   }
+    @Override
+    public void info(final String format, final Object arg) {
+        if (logger.isInfoEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void warn(String format, Object arg)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void info(final String format, final Object arg1, final Object arg2) {
+        if (logger.isInfoEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void warn(String format, Object arg1, Object arg2)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void info(final String format, final Object... arguments) {
+        if (logger.isInfoEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void warn(String format, Object[] argArray)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-      log(org.jboss.logging.Logger.Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void info(final String msg, final Throwable t) {
+        if (logger.isInfoEnabled()) {
+            log(Level.INFO, LOGGER_FQCN, msg, t);
+        }
+    }
 
-   public void warn(String msg, Throwable t)
-   {
-      logger.warn(LOGGER_FQCN, msg, t);
-   }
+    @Override
+    public boolean isWarnEnabled() {
+        return logger.isEnabled(Level.WARN);
+    }
 
-   public boolean isErrorEnabled()
-   {
-      // not supported by jboss-logging-spi
-      return true;
-   }
+    @Override
+    public void warn(final String msg) {
+        if (isWarnEnabled()) {
+            log(Level.WARN, LOGGER_FQCN, msg, null);
+        }
+    }
 
-   public void error(String msg)
-   {
-      logger.error(LOGGER_FQCN, msg, null);
-   }
+    @Override
+    public void warn(final String format, final Object arg) {
+        if (isWarnEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void error(String format, Object arg)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void warn(final String format, final Object... arguments) {
+        if (isWarnEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void error(String format, Object arg1, Object arg2)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void warn(final String format, final Object arg1, final Object arg2) {
+        if (isWarnEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-   public void error(String format, Object[] argArray)
-   {
-      final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, argArray);
-      log(org.jboss.logging.Logger.Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
-   }
+    @Override
+    public void warn(final String msg, final Throwable t) {
+        if (isWarnEnabled()) {
+            log(Level.WARN, LOGGER_FQCN, msg, t);
+        }
+    }
 
-   public void error(String msg, Throwable t)
-   {
-      logger.error(LOGGER_FQCN, msg, t);
-   }
+    @Override
+    public boolean isErrorEnabled() {
+        return logger.isEnabled(Level.ERROR);
+    }
 
-   @SuppressWarnings("unused")
-   public void log(final Marker marker, final String callerFQCN, final int level, final String msg, final Throwable t)
-   {
-      switch(level)
-      {
-         case LocationAwareLogger.TRACE_INT:
-            logger.trace(callerFQCN, msg, t);
-            break;
+    @Override
+    public void error(final String msg) {
+        if (isErrorEnabled()) {
+            log(Level.ERROR, LOGGER_FQCN, msg, null);
+        }
+    }
 
-         case LocationAwareLogger.DEBUG_INT:
-            logger.debug(callerFQCN, msg, t);
-            break;
+    @Override
+    public void error(final String format, final Object arg) {
+        if (isErrorEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-         case LocationAwareLogger.INFO_INT:
-            logger.info(callerFQCN, msg, t);
-            break;
+    @Override
+    public void error(final String format, final Object arg1, final Object arg2) {
+        if (isErrorEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-         case LocationAwareLogger.WARN_INT:
-            logger.warn(callerFQCN, msg, t);
-            break;
+    @Override
+    public void error(final String format, final Object... arguments) {
+        if (isErrorEnabled()) {
+            final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
+        }
+    }
 
-         case LocationAwareLogger.ERROR_INT:
-            logger.error(callerFQCN, msg, t);
-            break;
+    @Override
+    public void error(final String msg, final Throwable t) {
+        if (isErrorEnabled()) {
+            log(Level.ERROR, LOGGER_FQCN, msg, t);
+        }
+    }
 
-         default:
-            throw new IllegalStateException("Level number " + level + " is not recognized.");
-      }
-   }
-
-   @SuppressWarnings("unused")
-   public void log(final Marker marker, final String callerFQCN, final int level, final String msg, final Object[] argArray, final Throwable t)
-   {
-      FormattingTuple result = MessageFormatter.arrayFormat(msg, argArray);
-      switch(level)
-      {
-         case LocationAwareLogger.TRACE_INT:
-            logger.trace(callerFQCN, result.getMessage(), t);
-            break;
-
-         case LocationAwareLogger.DEBUG_INT:
-            logger.debug(callerFQCN, result.getMessage(), t);
-            break;
-
-         case LocationAwareLogger.INFO_INT:
-            logger.info(callerFQCN, result.getMessage(), t);
-            break;
-
-         case LocationAwareLogger.WARN_INT:
-            logger.warn(callerFQCN, result.getMessage(), t);
-            break;
-
-         case LocationAwareLogger.ERROR_INT:
-            logger.error(callerFQCN, result.getMessage(), t);
-            break;
-
-         default:
-            throw new IllegalStateException("Level number " + level + " is not recognized.");
-      }
-   }
-
-   private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message, final Throwable t) {
-      logger.log(level, fqcn, message, t);
-   }
+    private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message, final Throwable t) {
+        logger.log(level, fqcn, message, t);
+    }
 }
