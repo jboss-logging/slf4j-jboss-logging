@@ -49,6 +49,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     // package access so that only JBossLoggerFactory be able to create one.
     JBossLoggerAdapter(org.jboss.logging.Logger logger) {
         this.logger = logger;
+        this.name = logger.getName();
     }
 
     @Override
