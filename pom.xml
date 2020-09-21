@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>34</version>
+        <version>37</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.slf4j</groupId>
@@ -40,7 +40,7 @@
     </licenses>
 
     <properties>
-        <version.org.jboss.logging>3.4.0.Final</version.org.jboss.logging>
+        <version.org.jboss.logging>3.4.1.Final</version.org.jboss.logging>
         <version.org.slf4j>1.7.21</version.org.slf4j>
         <!-- Test dependencies -->
         <version.junit>4.12</version.junit>
