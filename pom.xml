@@ -40,7 +40,7 @@
     </licenses>
 
     <properties>
-        <version.org.jboss.logging>3.4.0.Final</version.org.jboss.logging>
+        <version.org.jboss.logging>3.4.1.Final</version.org.jboss.logging>
         <version.org.slf4j>1.7.21</version.org.slf4j>
         <!-- Test dependencies -->
         <version.junit>4.12</version.junit>
