@@ -32,6 +32,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.jboss.logmanager.LogContext;
 import org.jboss.slf4j.JBossLoggerAdapter;
 import org.jboss.slf4j.JBossMDCAdapter;
 import org.junit.After;
@@ -43,12 +44,13 @@ import org.junit.Test;
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  */
 public class LoggerTestCase {
-    private static final java.util.logging.Logger ROOT = java.util.logging.Logger.getLogger("");
+    private static final java.util.logging.Logger ROOT = LogContext.getLogContext().getLogger("");
     private static final QueueHandler HANDLER = new QueueHandler();
-    private static final Collection<Handler> CURRENT_HANDLERS = new ArrayList<Handler>();
+    private static final Collection<Handler> CURRENT_HANDLERS = new ArrayList<>();
 
     @BeforeClass
     public static void configureLogManager() {
+
         // By default JBoss Logging should choose JUL as a log manager since no log manager has been defined
         final Handler[] currentHandlers = ROOT.getHandlers();
         if (currentHandlers != null) {
@@ -88,11 +90,12 @@ public class LoggerTestCase {
         assertNull("Expected parameters to be null, when no args.", record.getParameters());
 
         // Test a formatted message
-        logger.info("This is a test formatted {}", "message");
+        // "{}" after message is to ensure formatting is handled only by JBossLoggerAdapter/SLF4J
+        logger.info("This is a test formatted {}", "message {}");
         record = HANDLER.messages.poll();
         assertNotNull(record);
-        assertEquals("Expected formatted message not found.", "This is a test formatted message", record.getMessage());
-        assertArrayEquals("Expected parameter not found.", new Object[]{"message"}, record.getParameters());
+        assertEquals("Expected formatted message not found.", "This is a test formatted message {}", record.getMessage());
+        assertArrayEquals("Expected parameter not found.", new Object[]{"message {}"}, record.getParameters());
     }
 
     @Test
@@ -108,10 +111,11 @@ public class LoggerTestCase {
         assertEquals("Cause is different from the expected cause", e, record.getThrown());
 
         // Test format with the last parameter being the throwable which should set be set on the record
-        logger.info("This is a test formatted {}", "message", e);
+        // "{}" after message is to ensure formatting is handled only by JBossLoggerAdapter/SLF4J
+        logger.info("This is a test formatted {}", "message {}", e);
         record = HANDLER.messages.poll();
         assertNotNull(record);
-        assertEquals("Expected formatted message not found.", "This is a test formatted message", record.getMessage());
+        assertEquals("Expected formatted message not found.", "This is a test formatted message {}", record.getMessage());
         assertEquals("Cause is different from the expected cause", e, record.getThrown());
 
     }
@@ -121,9 +125,12 @@ public class LoggerTestCase {
         assertTrue(expectedTypeMessage(JBossMDCAdapter.class, MDC.getMDCAdapter().getClass()),
                 MDC.getMDCAdapter().getClass() == JBossMDCAdapter.class);
         final String key = Long.toHexString(System.currentTimeMillis());
-        MDC.put(key, "value");
-        assertEquals("MDC value should be \"value\"", "value", MDC.get(key));
-        assertEquals("MDC value should be \"value\"", "value", org.jboss.logging.MDC.get(key));
+        try (MDC.MDCCloseable mdc = MDC.putCloseable(key, "value")) {
+            assertEquals("MDC value should be \"value\"", "value", MDC.get(key));
+            assertEquals("MDC value should be \"value\"", "value", org.jboss.logmanager.MDC.get(key));
+        }
+        assertNull("MDC value should be null", MDC.get(key));
+        assertNull("MDC value should be null", org.jboss.logmanager.MDC.get(key));
     }
 
     private static String expectedTypeMessage(final Class<?> expected, final Class<?> found) {
@@ -131,7 +138,7 @@ public class LoggerTestCase {
     }
 
     private static class QueueHandler extends Handler {
-        final BlockingDeque<LogRecord> messages = new LinkedBlockingDeque<LogRecord>();
+        final BlockingDeque<LogRecord> messages = new LinkedBlockingDeque<>();
 
         @Override
         public void publish(final LogRecord record) {

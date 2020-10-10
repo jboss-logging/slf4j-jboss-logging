@@ -19,12 +19,12 @@ package org.jboss.slf4j;
 
 import java.util.Map;
 
-import org.jboss.logging.MDC;
+import org.jboss.logmanager.MDC;
 import org.slf4j.spi.MDCAdapter;
 
 /**
  * Adapted from the corresponding slf4j-log4j adapter.
- * 
+ *
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
@@ -33,15 +33,12 @@ public class JBossMDCAdapter implements MDCAdapter
 
    public void clear()
    {
-      Map map = MDC.getMap();
-
-      if (map != null)
-         map.clear();
+      MDC.clear();
    }
 
    public String get(String key)
    {
-      return (String) MDC.get(key);
+      return MDC.get(key);
    }
 
    public void put(String key, String val)
@@ -54,15 +51,15 @@ public class JBossMDCAdapter implements MDCAdapter
       MDC.remove(key);
    }
 
-   public Map getCopyOfContextMap()
+   public Map<String, String> getCopyOfContextMap()
    {
-      return MDC.getMap();
+      return MDC.copy();
    }
 
    public void setContextMap(final Map contextMap)
    {
       clear();
-      for (Map.Entry entry : ((Map<?,?>)contextMap).entrySet()) {
+      for (Map.Entry<?,?> entry : ((Map<?,?>)contextMap).entrySet()) {
          final Object key = entry.getKey();
          final Object value = entry.getValue();
          if (key != null) {

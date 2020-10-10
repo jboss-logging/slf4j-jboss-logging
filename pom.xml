@@ -40,7 +40,7 @@
     </licenses>
 
     <properties>
-        <version.org.jboss.logging>3.4.1.Final</version.org.jboss.logging>
+        <version.org.jboss.logmanager.jboss-logmanager>2.1.17.Final</version.org.jboss.logmanager.jboss-logmanager>
         <version.org.slf4j>1.7.21</version.org.slf4j>
         <!-- Test dependencies -->
         <version.junit>4.12</version.junit>
@@ -52,11 +52,10 @@
             <artifactId>slf4j-api</artifactId>
             <version>${version.org.slf4j}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging</artifactId>
-            <version>${version.org.jboss.logging}</version>
+            <groupId>org.jboss.logmanager</groupId>
+            <artifactId>jboss-logmanager</artifactId>
+            <version>${version.org.jboss.logmanager.jboss-logmanager}</version>
         </dependency>
 
         <!-- Test dependencies -->

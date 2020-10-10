@@ -20,26 +20,28 @@ package org.jboss.slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jboss.logmanager.LogContext;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 
 /**
  * JBossLoggerFactory is an implementation of {@link ILoggerFactory} returning
  * the appropriate named {@link JBossLoggerAdapter} instance.
- * 
+ *
  * Adapted from the corresponding slf4j-log4j adapter.
- * 
+ *
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
 public class JBossLoggerFactory implements ILoggerFactory
 {
    /** JBossLoggerAdapter cache */
-   Map loggerMap;
+   private final Map<String, Logger> loggerMap;
+   private final LogContext logContext;
 
-   public JBossLoggerFactory()
-   {
-      loggerMap = new HashMap();
+   public JBossLoggerFactory() {
+      loggerMap = new HashMap<>();
+      logContext = LogContext.getLogContext();
    }
 
    /**
@@ -47,23 +49,22 @@ public class JBossLoggerFactory implements ILoggerFactory
     */
    public Logger getLogger(String name)
    {
-      Logger slf4jLogger = null;
-    
+      Logger slf4jLogger;
+
       // protect against concurrent access of loggerMap
       synchronized (this)
       {
-         slf4jLogger = (Logger) loggerMap.get(name);
-        
+         slf4jLogger = loggerMap.get(name);
+
          // no logger found
          if (slf4jLogger == null)
          {
             // create a new jboss logger
-            org.jboss.logging.Logger jbossLogger;
-            jbossLogger = org.jboss.logging.Logger.getLogger(name);
-            
+            final org.jboss.logmanager.Logger jbossLogger = logContext.getLogger(name);
+
             // wrap it with an adapter
             slf4jLogger = new JBossLoggerAdapter(jbossLogger);
-        
+
             // put it in the map
             loggerMap.put(name, slf4jLogger);
          }
