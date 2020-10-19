@@ -21,8 +21,6 @@ package org.slf4j;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,14 +83,12 @@ public class LoggerTestCase {
         LogRecord record = HANDLER.messages.poll();
         assertNotNull(record);
         assertEquals("Expected message not found.", testMsg, record.getMessage());
-        assertNull("Expected parameters to be null, when no args.", record.getParameters());
 
         // Test a formatted message
         logger.info("This is a test formatted {}", "message");
         record = HANDLER.messages.poll();
         assertNotNull(record);
         assertEquals("Expected formatted message not found.", "This is a test formatted message", record.getMessage());
-        assertArrayEquals("Expected parameter not found.", new Object[]{"message"}, record.getParameters());
     }
 
     @Test

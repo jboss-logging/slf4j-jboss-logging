@@ -53,23 +53,23 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
         FormattingTuple result = MessageFormatter.arrayFormat(message, argArray);
         switch (level) {
             case LocationAwareLogger.TRACE_INT:
-                logger.trace(fqcn, result.getMessage(), argArray, t);
+                logger.trace(fqcn, result.getMessage(), t);
                 break;
 
             case LocationAwareLogger.DEBUG_INT:
-                logger.debug(fqcn, result.getMessage(), argArray, t);
+                logger.debug(fqcn, result.getMessage(), t);
                 break;
 
             case LocationAwareLogger.INFO_INT:
-                logger.info(fqcn, result.getMessage(), argArray, t);
+                logger.info(fqcn, result.getMessage(), t);
                 break;
 
             case LocationAwareLogger.WARN_INT:
-                logger.warn(fqcn, result.getMessage(), argArray, t);
+                logger.warn(fqcn, result.getMessage(), t);
                 break;
 
             case LocationAwareLogger.ERROR_INT:
-                logger.error(fqcn, result.getMessage(), argArray, t);
+                logger.error(fqcn, result.getMessage(), t);
                 break;
 
             default:
@@ -84,14 +84,14 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
 
     @Override
     public void trace(final String msg) {
-        log(Level.TRACE, LOGGER_FQCN, msg);
+        log(Level.TRACE, LOGGER_FQCN, msg, null);
     }
 
     @Override
     public void trace(final String format, final Object arg) {
         if (logger.isTraceEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -99,7 +99,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void trace(final String format, final Object arg1, final Object arg2) {
         if (logger.isTraceEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg1, arg2);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -107,7 +107,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void trace(final String format, final Object... arguments) {
         if (logger.isTraceEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arguments);
+            log(Level.TRACE, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -125,16 +125,16 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
 
     @Override
     public void debug(final String msg) {
-        if (logger.isDebugEnabled()) {
-            log(Level.DEBUG, LOGGER_FQCN, msg);
-        }
+       if (logger.isDebugEnabled()) {
+           log(Level.DEBUG, LOGGER_FQCN, msg, null);
+       }
     }
 
     @Override
     public void debug(final String format, final Object arg) {
         if (logger.isDebugEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -142,7 +142,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void debug(final String format, final Object arg1, final Object arg2) {
         if (logger.isDebugEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg1, arg2);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -150,7 +150,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void debug(final String format, final Object... arguments) {
         if (logger.isDebugEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arguments);
+            log(Level.DEBUG, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -169,7 +169,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     @Override
     public void info(final String msg) {
         if (logger.isInfoEnabled()) {
-            log(Level.INFO, LOGGER_FQCN, msg);
+            log(Level.INFO, LOGGER_FQCN, msg, null);
         }
     }
 
@@ -177,7 +177,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void info(final String format, final Object arg) {
         if (logger.isInfoEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -185,7 +185,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void info(final String format, final Object arg1, final Object arg2) {
         if (logger.isInfoEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg1, arg2);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -193,7 +193,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void info(final String format, final Object... arguments) {
         if (logger.isInfoEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arguments);
+            log(Level.INFO, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -212,7 +212,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     @Override
     public void warn(final String msg) {
         if (isWarnEnabled()) {
-            log(Level.WARN, LOGGER_FQCN, msg);
+            log(Level.WARN, LOGGER_FQCN, msg, null);
         }
     }
 
@@ -220,7 +220,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void warn(final String format, final Object arg) {
         if (isWarnEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -228,7 +228,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void warn(final String format, final Object... arguments) {
         if (isWarnEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arguments);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -236,7 +236,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void warn(final String format, final Object arg1, final Object arg2) {
         if (isWarnEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg1, arg2);
+            log(Level.WARN, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -255,7 +255,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     @Override
     public void error(final String msg) {
         if (isErrorEnabled()) {
-            log(Level.ERROR, LOGGER_FQCN, msg);
+            log(Level.ERROR, LOGGER_FQCN, msg, null);
         }
     }
 
@@ -263,7 +263,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void error(final String format, final Object arg) {
         if (isErrorEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg);
-            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -271,7 +271,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void error(final String format, final Object arg1, final Object arg2) {
         if (isErrorEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arg1, arg2);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -279,7 +279,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
     public void error(final String format, final Object... arguments) {
         if (isErrorEnabled()) {
             final FormattingTuple formattingTuple = MessageFormatter.arrayFormat(format, arguments);
-            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable(), arguments);
+            log(Level.ERROR, LOGGER_FQCN, formattingTuple.getMessage(), formattingTuple.getThrowable());
         }
     }
 
@@ -290,15 +290,7 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
         }
     }
 
-    private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message) {
-        log(level, fqcn, message, null);
-    }
-
     private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message, final Throwable t) {
-        logger.log(fqcn, level, message, null, t);
-    }
-
-    private void log(final org.jboss.logging.Logger.Level level, final String fqcn, final Object message, final Throwable t, Object... args) {
-        logger.log(fqcn, level, message, args, t);
+        logger.log(level, fqcn, message, t);
     }
 }
