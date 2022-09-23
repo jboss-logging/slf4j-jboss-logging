@@ -17,10 +17,11 @@
  */
 package org.jboss.slf4j;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.logging.MDC;
-import org.slf4j.spi.MDCAdapter;
+import org.slf4j.helpers.BasicMDCAdapter;
 
 /**
  * Adapted from the corresponding slf4j-log4j adapter.
@@ -28,9 +29,10 @@ import org.slf4j.spi.MDCAdapter;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class JBossMDCAdapter implements MDCAdapter
+public class JBossMDCAdapter extends BasicMDCAdapter
 {
 
+   @Override
    public void clear()
    {
       Map map = MDC.getMap();
@@ -39,26 +41,38 @@ public class JBossMDCAdapter implements MDCAdapter
          map.clear();
    }
 
+   @Override
    public String get(String key)
    {
       return (String) MDC.get(key);
    }
 
+   @Override
    public void put(String key, String val)
    {
       MDC.put(key, val);
    }
 
+   @Override
    public void remove(String key)
    {
       MDC.remove(key);
    }
 
-   public Map getCopyOfContextMap()
-   {
-      return MDC.getMap();
+   @Override
+   public Map<String, String> getCopyOfContextMap() {
+      Map<String, Object> source = MDC.getMap();
+      if (source == null) {
+         // Complies to MDCAdapter.getCopyOfContextMap() javadoc.
+         // We don't return an emtpy map.
+         return null;
+      }
+      Map<String, String> copyMap = new HashMap<>(source.size());
+      source.forEach((k, v) -> copyMap.put(k, String.valueOf(v)));
+      return copyMap;
    }
 
+   @Override
    public void setContextMap(final Map contextMap)
    {
       clear();
@@ -70,4 +84,5 @@ public class JBossMDCAdapter implements MDCAdapter
          }
       }
    }
+
 }
