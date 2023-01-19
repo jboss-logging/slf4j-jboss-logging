@@ -125,9 +125,9 @@ public final class JBossLoggerAdapter extends MarkerIgnoringBase implements Loca
 
     @Override
     public void debug(final String msg) {
-       if (logger.isDebugEnabled()) {
-           log(Level.DEBUG, LOGGER_FQCN, msg, null);
-       }
+        if (logger.isDebugEnabled()) {
+            log(Level.DEBUG, LOGGER_FQCN, msg, null);
+        }
     }
 
     @Override

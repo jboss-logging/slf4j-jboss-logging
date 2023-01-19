@@ -86,7 +86,8 @@ public class LoggerTestCase {
         logger.info("This is a test formatted {}", "message");
         record = HANDLER.messages.poll();
         Assertions.assertNotNull(record);
-        Assertions.assertEquals("This is a test formatted message", record.getMessage(), "Expected formatted message not found.");
+        Assertions.assertEquals("This is a test formatted message", record.getMessage(),
+                "Expected formatted message not found.");
     }
 
     @Test
@@ -105,7 +106,8 @@ public class LoggerTestCase {
         logger.info("This is a test formatted {}", "message", e);
         record = HANDLER.messages.poll();
         Assertions.assertNotNull(record);
-        Assertions.assertEquals("This is a test formatted message", record.getMessage(), "Expected formatted message not found.");
+        Assertions.assertEquals("This is a test formatted message", record.getMessage(),
+                "Expected formatted message not found.");
         Assertions.assertEquals(e, record.getThrown(), "Cause is different from the expected cause");
 
     }
@@ -113,8 +115,9 @@ public class LoggerTestCase {
     @Test
     public void testMDC() {
         Assertions.assertSame(MDC.getMDCAdapter()
-                .getClass(), JBossMDCAdapter.class, expectedTypeMessage(JBossMDCAdapter.class, MDC.getMDCAdapter()
-                .getClass()));
+                .getClass(), JBossMDCAdapter.class,
+                expectedTypeMessage(JBossMDCAdapter.class, MDC.getMDCAdapter()
+                        .getClass()));
         final String key = Long.toHexString(System.currentTimeMillis());
         MDC.put(key, "value");
         Assertions.assertEquals("value", MDC.get(key), "MDC value should be \"value\"");

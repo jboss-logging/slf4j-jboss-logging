@@ -26,22 +26,18 @@ import org.slf4j.spi.MDCAdapter;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class StaticMDCBinder
-{
-   public static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
+public class StaticMDCBinder {
+    public static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
 
-   private StaticMDCBinder()
-   {
-      // empty
-   }
-  
-   public MDCAdapter getMDCA()
-   {
-      return new JBossMDCAdapter();
-   }
-  
-   public String  getMDCAdapterClassStr()
-   {
-      return JBossMDCAdapter.class.getName();
-   }
+    private StaticMDCBinder() {
+        // empty
+    }
+
+    public MDCAdapter getMDCA() {
+        return new JBossMDCAdapter();
+    }
+
+    public String getMDCAdapterClassStr() {
+        return JBossMDCAdapter.class.getName();
+    }
 }
