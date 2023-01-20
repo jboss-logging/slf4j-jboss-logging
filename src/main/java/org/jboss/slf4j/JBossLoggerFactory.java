@@ -26,48 +26,46 @@ import org.slf4j.Logger;
 /**
  * JBossLoggerFactory is an implementation of {@link ILoggerFactory} returning
  * the appropriate named {@link JBossLoggerAdapter} instance.
- * 
+ * <p>
  * Adapted from the corresponding slf4j-log4j adapter.
- * 
+ * </p>
+ *
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class JBossLoggerFactory implements ILoggerFactory
-{
-   /** JBossLoggerAdapter cache */
-   Map loggerMap;
+public class JBossLoggerFactory implements ILoggerFactory {
+    /**
+     * JBossLoggerAdapter cache
+     */
+    Map<String, Logger> loggerMap;
 
-   public JBossLoggerFactory()
-   {
-      loggerMap = new HashMap();
-   }
+    public JBossLoggerFactory() {
+        loggerMap = new HashMap<>();
+    }
 
-   /**
-    * @see org.slf4j.ILoggerFactory#getLogger(java.lang.String)
-    */
-   public Logger getLogger(String name)
-   {
-      Logger slf4jLogger = null;
-    
-      // protect against concurrent access of loggerMap
-      synchronized (this)
-      {
-         slf4jLogger = (Logger) loggerMap.get(name);
-        
-         // no logger found
-         if (slf4jLogger == null)
-         {
-            // create a new jboss logger
-            org.jboss.logging.Logger jbossLogger;
-            jbossLogger = org.jboss.logging.Logger.getLogger(name);
-            
-            // wrap it with an adapter
-            slf4jLogger = new JBossLoggerAdapter(jbossLogger);
-        
-            // put it in the map
-            loggerMap.put(name, slf4jLogger);
-         }
-      }
-      return slf4jLogger;
-   }
+    /**
+     * @see org.slf4j.ILoggerFactory#getLogger(java.lang.String)
+     */
+    public Logger getLogger(String name) {
+        Logger slf4jLogger = null;
+
+        // protect against concurrent access of loggerMap
+        synchronized (this) {
+            slf4jLogger = loggerMap.get(name);
+
+            // no logger found
+            if (slf4jLogger == null) {
+                // create a new jboss logger
+                org.jboss.logging.Logger jbossLogger;
+                jbossLogger = org.jboss.logging.Logger.getLogger(name);
+
+                // wrap it with an adapter
+                slf4jLogger = new JBossLoggerAdapter(jbossLogger);
+
+                // put it in the map
+                loggerMap.put(name, slf4jLogger);
+            }
+        }
+        return slf4jLogger;
+    }
 }

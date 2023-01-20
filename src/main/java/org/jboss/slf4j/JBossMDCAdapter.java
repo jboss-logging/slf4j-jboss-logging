@@ -17,6 +17,7 @@
  */
 package org.jboss.slf4j;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jboss.logging.MDC;
@@ -24,50 +25,51 @@ import org.slf4j.spi.MDCAdapter;
 
 /**
  * Adapted from the corresponding slf4j-log4j adapter.
- * 
+ *
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class JBossMDCAdapter implements MDCAdapter
-{
+public class JBossMDCAdapter implements MDCAdapter {
 
-   public void clear()
-   {
-      Map map = MDC.getMap();
+    public void clear() {
+        Map<String, Object> map = MDC.getMap();
 
-      if (map != null)
-         map.clear();
-   }
+        if (map != null)
+            map.clear();
+    }
 
-   public String get(String key)
-   {
-      return (String) MDC.get(key);
-   }
+    public String get(String key) {
+        return (String) MDC.get(key);
+    }
 
-   public void put(String key, String val)
-   {
-      MDC.put(key, val);
-   }
+    public void put(String key, String val) {
+        MDC.put(key, val);
+    }
 
-   public void remove(String key)
-   {
-      MDC.remove(key);
-   }
+    public void remove(String key) {
+        MDC.remove(key);
+    }
 
-   public Map getCopyOfContextMap()
-   {
-      return MDC.getMap();
-   }
+    public Map<String, String> getCopyOfContextMap() {
+        final Map<String, Object> map = MDC.getMap();
+        final Map<String, String> copy = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            final String key = entry.getKey();
+            final Object value = entry.getValue();
+            if (key != null) {
+                copy.put(key, value == null ? null : String.valueOf(value));
+            }
+        }
+        return copy;
+    }
 
-   public void setContextMap(final Map contextMap)
-   {
-      clear();
-      for (Map.Entry entry : ((Map<?,?>)contextMap).entrySet()) {
-         final Object key = entry.getKey();
-         final Object value = entry.getValue();
-         if (key != null) {
-            put(String.valueOf(key), value == null ? null : String.valueOf(value));
-         }
-      }
-   }
+    public void setContextMap(final Map<String, String> contextMap) {
+        clear();
+        for (Map.Entry<String, String> entry : contextMap.entrySet()) {
+            final String key = entry.getKey();
+            if (key != null) {
+                put(key, entry.getValue());
+            }
+        }
+    }
 }

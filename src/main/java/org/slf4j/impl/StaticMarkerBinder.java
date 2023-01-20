@@ -27,26 +27,22 @@ import org.slf4j.spi.MarkerFactoryBinder;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class StaticMarkerBinder implements MarkerFactoryBinder
-{
+public class StaticMarkerBinder implements MarkerFactoryBinder {
 
-   public static final StaticMarkerBinder SINGLETON = new StaticMarkerBinder();
-  
-   final IMarkerFactory markerFactory = new BasicMarkerFactory();
-  
-   private StaticMarkerBinder()
-   {
-      // empty
-   }
-  
-   public IMarkerFactory getMarkerFactory()
-   {
-      return markerFactory;
-   }
-  
-   public String getMarkerFactoryClassStr()
-   {
-      return BasicMarkerFactory.class.getName();
-   }
-  
+    public static final StaticMarkerBinder SINGLETON = new StaticMarkerBinder();
+
+    final IMarkerFactory markerFactory = new BasicMarkerFactory();
+
+    private StaticMarkerBinder() {
+        // empty
+    }
+
+    public IMarkerFactory getMarkerFactory() {
+        return markerFactory;
+    }
+
+    public String getMarkerFactoryClassStr() {
+        return BasicMarkerFactory.class.getName();
+    }
+
 }

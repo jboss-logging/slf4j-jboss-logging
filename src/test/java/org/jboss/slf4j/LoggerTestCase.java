@@ -1,7 +1,7 @@
 /*
  * JBoss, Home of Professional Open Source.
  *
- * Copyright 2020 Red Hat, Inc.
+ * Copyright 2023 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,25 @@
  * limitations under the License.
  */
 
-package org.slf4j;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+package org.jboss.slf4j;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.function.Supplier;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.jboss.slf4j.JBossLoggerAdapter;
-import org.jboss.slf4j.JBossMDCAdapter;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
@@ -45,7 +44,7 @@ public class LoggerTestCase {
     private static final QueueHandler HANDLER = new QueueHandler();
     private static final Collection<Handler> CURRENT_HANDLERS = new ArrayList<Handler>();
 
-    @BeforeClass
+    @BeforeAll
     public static void configureLogManager() {
         // By default JBoss Logging should choose JUL as a log manager since no log manager has been defined
         final Handler[] currentHandlers = ROOT.getHandlers();
@@ -58,7 +57,7 @@ public class LoggerTestCase {
         ROOT.addHandler(HANDLER);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() {
         ROOT.removeHandler(HANDLER);
         for (Handler handler : CURRENT_HANDLERS) {
@@ -66,7 +65,7 @@ public class LoggerTestCase {
         }
     }
 
-    @After
+    @AfterEach
     public void clearHandler() {
         HANDLER.reset();
     }
@@ -74,21 +73,22 @@ public class LoggerTestCase {
     @Test
     public void testLogger() {
         final Logger logger = LoggerFactory.getLogger(LoggerTestCase.class);
-        assertTrue(expectedTypeMessage(JBossLoggerAdapter.class, logger.getClass()),
-                logger instanceof JBossLoggerAdapter);
+        Assertions.assertTrue(logger instanceof JBossLoggerAdapter,
+                expectedTypeMessage(JBossLoggerAdapter.class, logger.getClass()));
 
         // Ensure the logger logs something
         final String testMsg = "This is a test message";
         logger.info(testMsg);
         LogRecord record = HANDLER.messages.poll();
-        assertNotNull(record);
-        assertEquals("Expected message not found.", testMsg, record.getMessage());
+        Assertions.assertNotNull(record);
+        Assertions.assertEquals(testMsg, record.getMessage(), "Expected message not found.");
 
         // Test a formatted message
         logger.info("This is a test formatted {}", "message");
         record = HANDLER.messages.poll();
-        assertNotNull(record);
-        assertEquals("Expected formatted message not found.", "This is a test formatted message", record.getMessage());
+        Assertions.assertNotNull(record);
+        Assertions.assertEquals("This is a test formatted message", record.getMessage(),
+                "Expected formatted message not found.");
     }
 
     @Test
@@ -99,31 +99,34 @@ public class LoggerTestCase {
         final String testMsg = "This is a test message";
         logger.info(testMsg, e);
         LogRecord record = HANDLER.messages.poll();
-        assertNotNull(record);
-        assertEquals("Expected message not found.", testMsg, record.getMessage());
-        assertEquals("Cause is different from the expected cause", e, record.getThrown());
+        Assertions.assertNotNull(record);
+        Assertions.assertEquals(testMsg, record.getMessage(), "Expected message not found.");
+        Assertions.assertEquals(e, record.getThrown(), "Cause is different from the expected cause");
 
         // Test format with the last parameter being the throwable which should set be set on the record
         logger.info("This is a test formatted {}", "message", e);
         record = HANDLER.messages.poll();
-        assertNotNull(record);
-        assertEquals("Expected formatted message not found.", "This is a test formatted message", record.getMessage());
-        assertEquals("Cause is different from the expected cause", e, record.getThrown());
+        Assertions.assertNotNull(record);
+        Assertions.assertEquals("This is a test formatted message", record.getMessage(),
+                "Expected formatted message not found.");
+        Assertions.assertEquals(e, record.getThrown(), "Cause is different from the expected cause");
 
     }
 
     @Test
     public void testMDC() {
-        assertTrue(expectedTypeMessage(JBossMDCAdapter.class, MDC.getMDCAdapter().getClass()),
-                MDC.getMDCAdapter().getClass() == JBossMDCAdapter.class);
+        Assertions.assertSame(MDC.getMDCAdapter()
+                .getClass(), JBossMDCAdapter.class,
+                expectedTypeMessage(JBossMDCAdapter.class, MDC.getMDCAdapter()
+                        .getClass()));
         final String key = Long.toHexString(System.currentTimeMillis());
         MDC.put(key, "value");
-        assertEquals("MDC value should be \"value\"", "value", MDC.get(key));
-        assertEquals("MDC value should be \"value\"", "value", org.jboss.logging.MDC.get(key));
+        Assertions.assertEquals("value", MDC.get(key), "MDC value should be \"value\"");
+        Assertions.assertEquals("value", org.jboss.logging.MDC.get(key), "MDC value should be \"value\"");
     }
 
-    private static String expectedTypeMessage(final Class<?> expected, final Class<?> found) {
-        return String.format("Expected type %s but found type %s", expected.getName(), found.getName());
+    private static Supplier<String> expectedTypeMessage(final Class<?> expected, final Class<?> found) {
+        return () -> String.format("Expected type %s but found type %s", expected.getName(), found.getName());
     }
 
     private static class QueueHandler extends Handler {
