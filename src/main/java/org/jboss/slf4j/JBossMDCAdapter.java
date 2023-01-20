@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jboss.logging.MDC;
+import org.slf4j.helpers.BasicMDCAdapter;
 import org.slf4j.spi.MDCAdapter;
 
 /**
@@ -29,8 +30,9 @@ import org.slf4j.spi.MDCAdapter;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
-public class JBossMDCAdapter implements MDCAdapter {
+public class JBossMDCAdapter extends BasicMDCAdapter implements MDCAdapter {
 
+    @Override
     public void clear() {
         Map<String, Object> map = MDC.getMap();
 
@@ -38,18 +40,22 @@ public class JBossMDCAdapter implements MDCAdapter {
             map.clear();
     }
 
+    @Override
     public String get(String key) {
         return (String) MDC.get(key);
     }
 
+    @Override
     public void put(String key, String val) {
         MDC.put(key, val);
     }
 
+    @Override
     public void remove(String key) {
         MDC.remove(key);
     }
 
+    @Override
     public Map<String, String> getCopyOfContextMap() {
         final Map<String, Object> map = MDC.getMap();
         final Map<String, String> copy = new LinkedHashMap<>();
@@ -63,6 +69,7 @@ public class JBossMDCAdapter implements MDCAdapter {
         return copy;
     }
 
+    @Override
     public void setContextMap(final Map<String, String> contextMap) {
         clear();
         for (Map.Entry<String, String> entry : contextMap.entrySet()) {

@@ -1,7 +1,7 @@
 /*
  * JBoss, Home of Professional Open Source.
  *
- * Copyright 2020 Red Hat, Inc.
+ * Copyright 2023 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,14 @@ import org.slf4j.spi.LoggerFactoryBinder;
  * @author <a href="mailto:jperkins@redhat.com">James R. Perkins</a>
  * @version <tt>$Revision: 2784 $</tt>
  */
+@Deprecated(forRemoval = true)
 public class StaticLoggerBinder implements LoggerFactoryBinder {
     /**
      * Declare the version of the SLF4J API this implementation is compiled against.
      * The value of this field is usually modified with each release.
      */
     // to avoid constant folding by the compiler, this field must *not* be final
-    public static String REQUESTED_API_VERSION = "1.7.21";
+    public static String REQUESTED_API_VERSION = "2.0.6";
 
     public static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
