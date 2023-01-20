@@ -61,7 +61,7 @@
 
     <properties>
         <version.org.jboss.logging>3.5.0.Final</version.org.jboss.logging>
-        <version.org.slf4j>1.7.21</version.org.slf4j>
+        <version.org.slf4j>1.7.22.jbossorg-1</version.org.slf4j>
         <!-- Test dependencies -->
         <version.org.junit>5.9.2</version.org.junit>
     </properties>
