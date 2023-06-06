@@ -60,7 +60,7 @@
     </licenses>
 
     <properties>
-        <version.org.jboss.logging>3.5.0.Final</version.org.jboss.logging>
+        <version.org.jboss.logging>3.5.1.Final</version.org.jboss.logging>
         <version.org.slf4j>2.0.6</version.org.slf4j>
         <!-- Test dependencies -->
         <version.org.junit>5.9.3</version.org.junit>
