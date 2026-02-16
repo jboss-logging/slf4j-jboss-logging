@@ -63,7 +63,7 @@
         <version.org.jboss.logging>3.5.3.Final</version.org.jboss.logging>
         <version.org.slf4j>2.0.12</version.org.slf4j>
         <!-- Test dependencies -->
-        <version.org.junit>5.10.2</version.org.junit>
+        <version.org.junit>5.10.3</version.org.junit>
     </properties>
 
     <dependencyManagement>
