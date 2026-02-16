@@ -1,10 +1,14 @@
 = SLF4J Binding to JBoss Logging
 
 The https://www.slf4j.org/[SLF4J] binding to JBoss Logging is just as it sounds. It's a
-https://www.slf4j.org/manual.html#swapping[SLF4J binding] which sends log messages through JBoss Logging. While this
-may seem odd to redirect log messages from one logging facade to another, it's useful in some cases. This project is
+https://www.slf4j.org/manual.html#swapping[SLF4J binding] which sends log messages through JBoss Logging. This project is
 currently used in https://wildfly.org[WildFly] and
 https://www.redhat.com/en/technologies/jboss-middleware/application-platform[JBoss EAP].
+
+This binding sends log messages from the slf4j api to the jboss logging api. While it may seem odd to redirect log messages 
+from one logging facade to another, it's useful in some cases. If you have a JBoss LogManager configured as logging 
+backend and want to send the slf4j message to it, you should probably be using 
+https://github.com/jboss-logging/slf4j-jboss-logmanager[slf4j-jboss-logmanager].
 
 == Usage
 
